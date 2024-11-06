@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+</head>
+<body>
+    <h1>Submit Your Information</h1>
+    <form id="infoForm" action="http://localhost:3000/submit-form" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Optional JavaScript to handle the form submission without page reload -->
+    <script>
+        const form = document.getElementById('infoForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form data
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email')
+            };
+
+            // Send the form data to the server
+            try {
+                const response = await fetch('http://localhost:3000/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.text();
+                    alert(result); // Show the server response
+                } else {
+                    alert('Form submission failed.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during form submission.');
+            }
+        });
+    </script>
+</body>
+</html>
 
